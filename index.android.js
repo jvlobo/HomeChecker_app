@@ -8,6 +8,7 @@ import React, {
   Image,
   ScrollView,
   RefreshControl,
+  ToastAndroid,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -38,68 +39,77 @@ var HomeChecker = React.createClass({
   },
 
   checkStatus: function(refreshing){
-    fetch('http://107.170.46.118:3000/status')
-      .then(res => res.json())
-      .then(res => {
+    function timeout(ms, promise) {
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          reject(new Error("timeout"))
+        }, ms)
+        promise.then(resolve, reject)
+      })
+    }
+
+    timeout(10000, fetch('http://107.170.46.118:3000/status')).then(res => res.json()).then(res => {
+      this.setState({
+        isLoading: false,
+
+        miguelHour: res.miguel.time,
+        miguelAgo: res.miguel.timeago,
+        loboHour: res.lobo.time,
+        loboAgo: res.lobo.timeago,
+      });
+
+      if(res.miguel.status == 0){
         this.setState({
-          isLoading: false,
-
-          miguelHour: res.miguel.time,
-          miguelAgo: res.miguel.timeago,
-          loboHour: res.lobo.time,
-          loboAgo: res.lobo.timeago,
+          miguelBorderColor: styles.borderOut,
+          miguelIconName: 'reply',
+          miguelIconClass: styles.iconOut,
         });
+      }
 
-        if(res.miguel.status == 0){
-          this.setState({
-            miguelBorderColor: styles.borderOut,
-            miguelIconName: 'reply',
-            miguelIconClass: styles.iconOut,
-          });
-        }
+      if(res.lobo.status == 0){
+        this.setState({
+          loboBorderColor: styles.borderOut,
+          loboIconName: 'reply',
+          loboIconClass: styles.iconOut,
+        });
+      }
 
-        if(res.lobo.status == 0){
-          this.setState({
-            loboBorderColor: styles.borderOut,
-            loboIconName: 'reply',
-            loboIconClass: styles.iconOut,
-          });
-        }
+      if(res.miguel.status == 1){
+        this.setState({
+          miguelBorderColor: styles.borderIn,
+          miguelIconName: 'share',
+          miguelIconClass: styles.iconIn,
+        });
+      }
 
-        if(res.miguel.status == 1){
-          this.setState({
-            miguelBorderColor: styles.borderIn,
-            miguelIconName: 'share',
-            miguelIconClass: styles.iconIn,
-          });
-        }
+      if(res.lobo.status == 1){
+        this.setState({
+          loboBorderColor: styles.borderIn,
+          loboIconName: 'share',
+          loboIconClass: styles.iconIn,
+        });
+      }
 
-        if(res.lobo.status == 1){
-          this.setState({
-            loboBorderColor: styles.borderIn,
-            loboIconName: 'share',
-            loboIconClass: styles.iconIn,
-          });
-        }
+      if(res.miguel.status == 2){
+        this.setState({
+          miguelBorderColor: styles.borderUnknown,
+          miguelIconName: 'times',
+          miguelIconClass: styles.iconUnknown,
+        });
+      }
 
-        if(res.miguel.status == 2){
-          this.setState({
-            miguelBorderColor: styles.borderUnknown,
-            miguelIconName: 'times',
-            miguelIconClass: styles.iconUnknown,
-          });
-        }
+      if(res.lobo.status == 2){
+        this.setState({
+          loboBorderColor: styles.borderUnknown,
+          loboIconName: 'times',
+          loboIconClass: styles.iconUnknown,
+        });
+      }
 
-        if(res.lobo.status == 2){
-          this.setState({
-            loboBorderColor: styles.borderUnknown,
-            loboIconName: 'times',
-            loboIconClass: styles.iconUnknown,
-          });
-        }
-
-        if(refreshing)
-          this.setState({isRefreshing: false});      
+      if(refreshing)
+        this.setState({isRefreshing: false});  
+    }).catch(function(error) {
+      ToastAndroid.show('Imposible realizar la conexión', ToastAndroid.SHORT)
     });
   },
 
