@@ -38,7 +38,7 @@ var HomeChecker = React.createClass({
   },
 
   checkStatus: function(refreshing){
-    fetch('http://192.168.1.130:3000/status')
+    fetch('http://107.170.46.118:3000/status')
       .then(res => res.json())
       .then(res => {
         this.setState({
