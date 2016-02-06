@@ -41,7 +41,6 @@ var HomeChecker = React.createClass({
     fetch('http://192.168.1.130:3000/status')
       .then(res => res.json())
       .then(res => {
-        console.log(res);
         this.setState({
           isLoading: false,
 
@@ -217,7 +216,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     position: 'absolute',
     left: -15,
-    top: 5,
   },
 
   iconOut: {
