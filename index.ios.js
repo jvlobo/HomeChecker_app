@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     position: 'absolute',
     left: -15,
+    top: 5,
   },
 
   iconOut: {
