@@ -48,7 +48,7 @@ var HomeChecker = React.createClass({
       })
     }
 
-    timeout(10000, fetch('http://107.170.46.118:3000/status')).then(res => res.json()).then(res => {
+    timeout(10000, fetch('http://localhost:3000/status')).then(res => res.json()).then(res => {
       this.setState({
         isLoading: false,
 
@@ -107,7 +107,7 @@ var HomeChecker = React.createClass({
       }
 
       if(refreshing)
-        this.setState({isRefreshing: false});  
+        this.setState({isRefreshing: false});
     }).catch(function(error) {
       AlertIOS.alert('Imposible realizar la conexión');
     });
@@ -115,7 +115,7 @@ var HomeChecker = React.createClass({
 
   _onRefresh() {
     this.setState({isRefreshing: true});
-    this.checkStatus(true);    
+    this.checkStatus(true);
   },
 
   render: function() {
@@ -132,7 +132,7 @@ var HomeChecker = React.createClass({
       contents = (
         <View>
           <View style={[styles.personContainer, styles.miguelContainer]}>
-            <Image source={require('./images/miguel.jpg')} style={[styles.picture, this.state.miguelBorderColor]}/>
+            <Image source={require('./images/user.png')} style={[styles.picture, this.state.miguelBorderColor]}/>
             <View style={styles.hourContainer}>
               <Icon name={this.state.miguelIconName} style={[styles.icon, this.state.miguelIconClass]}/>
               <Text style={styles.hour}>{this.state.miguelHour}</Text>
@@ -140,7 +140,7 @@ var HomeChecker = React.createClass({
             <Text style={styles.timeAgo} >{this.state.miguelAgo}</Text>
           </View>
           <View style={styles.personContainer}>
-            <Image source={require('./images/lobo.jpg')} style={[styles.picture, this.state.loboBorderColor]}/>
+            <Image source={require('./images/user.png')} style={[styles.picture, this.state.loboBorderColor]}/>
             <View style={styles.hourContainer}>
               <Icon name={this.state.loboIconName} style={[styles.icon, this.state.loboIconClass]}/>
               <Text style={styles.hour}>{this.state.loboHour}</Text>
@@ -165,7 +165,7 @@ var HomeChecker = React.createClass({
             >
         { contents }
       </ScrollView>
-      
+
     );
   }
 });
